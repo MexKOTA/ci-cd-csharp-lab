@@ -1,28 +1,28 @@
-name: .NET CI    # Название workflow
+name: .NET CI
 
 on:
-  push:    # Запускать workflow при пуше в ветку main
+  push:
     branches: [ "main" ]
-  pull_request: # Запускать workflow при создании pull request в ветку main
+  pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest   # Выбираем виртуальную машину с Ubuntu для выполнения шагов
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3  # Клонирование кода репозитория
+    - uses: actions/checkout@v4
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3  # Установка .NET SDK
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'  # Версия .NET SDK
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore CalculatorApp/CalculatorApp.csproj  # Указываем путь к основному проекту
+      run: dotnet restore CalculatorApp/CalculatorApp.csproj
 
     - name: Build
-      run: dotnet build CalculatorApp/CalculatorApp.csproj --no-restore  # Сборка основного проекта
+      run: dotnet build CalculatorApp/CalculatorApp.csproj --no-restore --configuration Release
 
     - name: Test
-      run: dotnet test CalculatorApp.Tests/CalculatorApp.Tests.csproj --no-build  # Запуск тестов
+      run: dotnet test CalculatorApp.Tests/CalculatorApp.Tests.csproj --configuration Release --verbosity normal
